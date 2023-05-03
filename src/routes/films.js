@@ -15,12 +15,22 @@ router.get("/", async (req, res) => {
     };
 });
 //  Get film by Id
-router.get("/:filmID", async(req, res) => {
+router.get("/:filmID", async (req, res) => {
     try {
         const response = await FilmModel.findById(req.params.filmID);
         res.json(response);
     } catch (err) {
         res.json(err);
+    }
+});
+//  Get film by title
+router.get("/title/:filmTitle", async (req, res) => {
+    const title = req.params.filmTitle
+    try {
+        const response = await FilmModel.find({ title: { $regex: ".*" + title + ".*", $options: "i" } })
+        res.json(response);
+    } catch (err) {
+        res.json(err)
     }
 });
 //  Add a new film
@@ -33,14 +43,14 @@ router.post("/", verifyToken, async (req, res) => {
         res.json(err);
     };
 });
-router.post("/review", verifyToken, async(req, res) => {
+router.post("/review", verifyToken, async (req, res) => {
     const film = await FilmModel.findById(req.body.filmID);
     const user = await UserModel.findById(req.body.userID);
-    const review = {...req.body.review, user: {_id: user._id, username: user.username }};
+    const review = { ...req.body.review, user: { _id: user._id, username: user.username } };
     try {
         film.reviews.push(review);
         await film.save();
-        res.json({film});
+        res.json({ film });
     } catch (err) {
         console.error(err)
     }
