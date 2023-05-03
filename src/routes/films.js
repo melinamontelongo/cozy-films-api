@@ -30,7 +30,7 @@ router.get("/title/:filmTitle", async (req, res) => {
         const response = await FilmModel.find({ title: { $regex: ".*" + title + ".*", $options: "i" } })
         res.json(response);
     } catch (err) {
-        res.json(err)
+        res.json(err);
     }
 });
 //  Add a new film
@@ -52,8 +52,8 @@ router.post("/review", verifyToken, async (req, res) => {
         await film.save();
         res.json({ film });
     } catch (err) {
-        console.error(err)
-    }
+        res.status(500).json({ message: "An unexpected error occurred, retry in a few seconds" });
+    };
 })
 //  Like a film
 router.put("/", verifyToken, async (req, res) => {
@@ -73,7 +73,7 @@ router.put("/", verifyToken, async (req, res) => {
         await user.save();
         res.json({ likedFilms: user.likedFilms });
     } catch (err) {
-        res.json(err);
+        res.status(500).json({ message: "An unexpected error occurred, retry in a few seconds" });
     };
 });
 
@@ -95,7 +95,7 @@ router.put("/dislike", verifyToken, async (req, res) => {
         await user.save();
         res.json({ dislikedFilms: user.dislikedFilms });
     } catch (err) {
-        res.json(err)
+        res.status(500).json({ message: "An unexpected error occurred, retry in a few seconds" });
     }
 });
 //  Get liked films ID's
@@ -104,7 +104,7 @@ router.get("/likedFilms/ids/:userID", async (req, res) => {
         const user = await UserModel.findById(req.params.userID);
         res.json({ likedFilms: user?.likedFilms })
     } catch (err) {
-        res.json(err);
+        res.status(500).json({ message: "An unexpected error occurred, retry in a few seconds" });
     };
 });
 //  Get disliked films ID's
@@ -113,7 +113,7 @@ router.get("/dislikedFilms/ids/:userID", async (req, res) => {
         const user = await UserModel.findById(req.params.userID);
         res.json({ dislikedFilms: user?.dislikedFilms })
     } catch (err) {
-        res.json(err);
+        res.status(500).json({ message: "An unexpected error occurred, retry in a few seconds" });
     };
 });
 //  Get all saved films (liked and disliked)
@@ -123,7 +123,7 @@ router.get("/savedFilms", async (req, res) => {
         const savedFilms = await FilmModel.find({ _id: { $in: user.savedRecipes } })
         res.json({ savedFilms })
     } catch (err) {
-        res.json(err);
+        res.status(500).json({ message: "An unexpected error occurred, retry in a few seconds" });
     };
 })
 
