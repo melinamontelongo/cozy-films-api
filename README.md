@@ -5,4 +5,4 @@ This is part of a full stack (MERN) project of my own, using React for its front
 
 Cozy Films deploy: https://melinamontelongo.github.io/cozy-films/
 
-Cozy Films repo: https://github.com/melinamontelongo/cozy-films
+Cozy Films front end repo: https://github.com/melinamontelongo/cozy-films
